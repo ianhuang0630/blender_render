@@ -14,11 +14,11 @@ Install latest version blender. The code here was used with `blender-2.93.4-linu
 ![alt text](example_mesh.png)
 
 ## Bounding box rendering with colors corresponding to semantic colors
-`bash render_one_boxshape_adddel.sh`
+`bash scripts/render_one_boxshape_adddel.sh`
 ![alt text](example_boxshape.png)
 
 ## Bounding box rendering with annotations
-`bash render_one_boxshape.sh`
+`bash scripts/render_one_boxshape.sh`
 ![alt text](example_boxshape_annot.png)
 
 
