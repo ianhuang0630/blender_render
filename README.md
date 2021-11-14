@@ -22,11 +22,13 @@ Takes in a .obj, and a colors.txt that gives the space-separated rgb values for 
 
 ## Bounding box rendering with colors corresponding to semantic colors
 This graphs out a (structurenet)[https://github.com/daerduoCarey/structurenet] json representation of object part hierarchies.
+
 `bash scripts/render_one_boxshape_adddel.sh`
 ![alt text](example_boxshape.png)
 
 ## Bounding box rendering with annotations
 This graphs out a (structurenet)[https://github.com/daerduoCarey/structurenet] json representation of object part hierarchies, with nodes with `.annot` fields, containing lists of strings for the annotations.
+
 `bash scripts/render_one_boxshape.sh`
 ![alt text](example_boxshape_annot.png)
 
