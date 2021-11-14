@@ -30,8 +30,10 @@ def load_colors(fn):
 obj_filename = sys.argv[6]
 colors_filename = sys.argv[7]
 output_filename = sys.argv[8]
+magnification = 3
 
 verts, faces = load_obj(obj_filename)
+verts = verts * magnification
 colors = load_colors(colors_filename)
 
 # # rotate for blender
