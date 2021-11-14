@@ -5,7 +5,7 @@ import bpy
 sys.path.append(os.getcwd()) # for some reason the working directory is not in path
 from vis_utils import load_object, hex2rgb, read_textfile_list, load_semantic_colors
 
-colors_filename =  'semantic_colors.txt' # 'SynChair.txt' #
+colors_filename =  'SynChair.txt' # 'semantic_colors.txt' # 'SynChair.txt' #
 leafs_only = True
 
 def create_box(box_params):
