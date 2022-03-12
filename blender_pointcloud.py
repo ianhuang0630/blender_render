@@ -12,7 +12,7 @@ print('hello world')
 # colors_filename = 'semantic_colors.txt'
 # color_offsets_filename = 'instance_color_offsets.txt'
 # semantics_filename = 'semantics.txt'
-point_radius = 0.01
+point_radius = 0.015
 # result_type = 'orig'
 # ins_color_offset_strength = 0.3
 # 
@@ -34,15 +34,6 @@ point_radius = 0.01
 # output_filename = sys.argv[7]
 # 
 
-if '--' in sys.argv:
-    offset = sys.argv.index('--') + 1
-   
-in_path = sys.argv[offset + 0]
-pts_path = os.path.join(in_path, 'pts.txt')
-colors_path = os.path.join(in_path, 'colors.txt')
-    
-out_path = sys.argv[offset + 1]
-render_path = out_path
 
 def load_pts(fn):
     pts = []
@@ -59,14 +50,37 @@ def load_colors(fn):
             colors.append([int(el) for el in rgb.rstrip().split()])
     return np.array(colors)/255
 
-pts = load_pts(pts_path)
-pt_colors = load_colors(colors_path)
-# TODO normalize [0,1]
 
+
+if '--' in sys.argv:
+    offset = sys.argv.index('--') + 1
+   
+in_path = sys.argv[offset + 0]
+if os.path.isdir(in_path):
+    pts_path = os.path.join(in_path, 'pts.txt')
+    colors_path = os.path.join(in_path, 'colors.txt')
+    pts = load_pts(pts_path)
+    pt_colors = load_colors(colors_path)
+else:
+    pts_path = in_path
+    pts = np.load(pts_path)['pc']
+    pt_colors = 0.5*np.ones_like(pts)
+
+if ',' in sys.argv[offset+1]:
+    rgb_per_point = [int(el)/255 for el in sys.argv[offset+1].split(',')]
+    pt_colors = np.array([rgb_per_point]*len(pts))
+    print('commandline specified rgb')
+    print(pt_colors)
+    out_path = sys.argv[offset+2] 
+else:
+    out_path = sys.argv[offset + 1]
+render_path = out_path
+
+# TODO normalize [0,1]
 
 # # rotate for blender
 coord_rot = np.array([[-1, 0, 0],
-                    [0, 0, 1],
+                    [0, 0, -1],
                     [0, 1, 0]])
 pts = np.matmul(pts, coord_rot.transpose())
 

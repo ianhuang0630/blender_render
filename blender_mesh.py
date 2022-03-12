@@ -21,24 +21,35 @@ def load_obj(fn):
 
 def load_colors(fn):
     colors = []
+    if fn is None:
+        return None
     with open(fn, 'r') as f:
         rgbs = f.readlines()
         for rgb in rgbs:
             colors.append([int(el) for el in rgb.rstrip().split()])
     return np.array(colors)/255
 
-obj_filename = sys.argv[6]
-colors_filename = sys.argv[7]
-output_filename = sys.argv[8]
-magnification = 3
+if len(sys.argv) == 9:
+    obj_filename = sys.argv[6]
+    colors_filename = sys.argv[7]
+    output_filename = sys.argv[8]
+else:
+    print("No color filenames detected, will assign default.")
+    obj_filename = sys.argv[6]
+    colors_filename = None
+    output_filename = sys.argv[7]
+
+magnification = 1
 
 verts, faces = load_obj(obj_filename)
 verts = verts * magnification
 colors = load_colors(colors_filename)
+if colors is None:
+    colors = 0.5 * np.ones_like(verts)
 
 # # rotate for blender
 coord_rot = np.array([[-1, 0, 0], 
-                    [0, 0, 1], 
+                    [0, 0, -1], 
                     [0, 1, 0]])
 verts = np.matmul(verts, coord_rot.transpose())
 
