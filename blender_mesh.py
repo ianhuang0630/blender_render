@@ -4,6 +4,17 @@ import numpy as np
 import bpy
 sys.path.append(os.getcwd()) # for some reason the working directory is not in path
 
+def load_ply(ply_file):
+    with open(ply_file, 'r') as f:
+        lines = f.readlines()
+        verts_num = int(lines[2].split(' ')[-1])
+        faces_num = int(lines[6].split(' ')[-1])
+        verts_lines = lines[9:9 + verts_num]
+        faces_lines = lines[9 + verts_num:]
+        verts = np.array([list(map(float, l.strip().split(' '))) for l in verts_lines])
+        faces = np.array([list(map(int, l.strip().split(' '))) for l in faces_lines])[:,1:]
+    return verts, faces 
+
 def load_obj(fn):
     fin = open(fn, 'r')
     lines = [line.rstrip() for line in fin]
@@ -41,7 +52,12 @@ else:
 
 magnification = 1
 
-verts, faces = load_obj(obj_filename)
+if obj_filename.endswith('.obj'):
+    verts, faces = load_obj(obj_filename)
+elif obj_filename.endswith('.ply'):
+    verts, faces = load_ply(obj_filename)
+
+
 verts = verts * magnification
 colors = load_colors(colors_filename)
 if colors is None:
